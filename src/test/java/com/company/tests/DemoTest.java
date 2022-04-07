@@ -1,22 +1,22 @@
 package com.company.tests;
 
-import com.company.config.ConfigFactory;
-import com.company.config.FrameworkConfig;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.aeonbits.owner.ConfigCache;
+import com.company.config.factory.BrowserStackConfigFactory;
+import com.company.config.factory.FrameworkConfigFactory;
+import com.company.driver.Driver;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class DemoTest {
 
+    @BeforeMethod
+    public void setUp(){
+        Driver.initDriverForWeb();
+    }
     @Test
     public void testLogin(){
+        //Dri.get("https://google.com");
+        System.out.println(BrowserStackConfigFactory.getConfig().browserStackURL());
 
-        System.out.println(ConfigFactory.getConfig().browser());
-        /*WebDriverManager.chromedriver().setup();
-        WebDriver driver=new ChromeDriver();
-        driver.get("Https://google.co.in");
-        driver.quit();*/
     }
 }
