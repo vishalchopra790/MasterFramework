@@ -14,10 +14,15 @@ import java.net.URL;
 @Config.Sources({
         "system:properties",
         "system:env",
-        "file:${user.dir}/src/test/resources/config.properties"
+        "file:${user.dir}/src/test/resources/config.properties",
+        "file:${user.dir}/src/test/resources/env.properties"
 })
 public interface FrameworkConfig extends Config {
 
+    @DefaultValue("uat")
+    String environment();
+    @Key("${environment}.webURL")
+    String webURL();
     @DefaultValue("CHROME")
     @ConverterClass(StringToBrowserTypeConverter.class)
     BrowserType browser();

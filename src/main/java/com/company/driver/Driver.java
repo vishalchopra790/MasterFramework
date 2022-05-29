@@ -3,13 +3,14 @@ package com.company.driver;
 
 
 import com.company.driver.factory.DriverFactory;
-import com.company.driver.factory.entity.DriverData;
 import com.company.driver.factory.entity.MobileDriverData;
 import com.company.driver.factory.entity.WebDriverData;
-import com.company.driver.factory.mobile.local.LocalMobileDriverFactory;
-import com.company.driver.factory.web.remote.RemoteDriverFactory;
+
 import com.company.enums.MobilePlatformType;
 import org.openqa.selenium.WebDriver;
+
+
+import java.util.Objects;
 
 import static com.company.config.factory.FrameworkConfigFactory.getConfig;
 
@@ -18,20 +19,28 @@ public final class Driver {
     }
 
     public static void initDriverForWeb() {
-       WebDriverData driverData= WebDriverData.builder().browserType(getConfig().browser())
-               .browserRemoteModeType(getConfig().browserRemoteMode())
-               .runModeType(getConfig().browserRunMode()).build();
-        WebDriver driver = DriverFactory.getDriverForWeb(driverData);
-        driver.quit();
+       if(Objects.isNull(DriverManager.getDriver())) {
+           WebDriverData driverData = new WebDriverData(getConfig().browser(), getConfig().browserRemoteMode());
+
+           WebDriver driver = DriverFactory.getDriverForWeb(getConfig().browserRunMode()).getDriver(driverData);
+           DriverManager.setDriver(driver);
+           loadURL();
+       }
+    }
+    public static void loadURL(){
+        DriverManager.getDriver().get(getConfig().webURL());
     }
     public static void initDriverForMobile() {
-        MobileDriverData driverData=MobileDriverData.builder().mobilePlatformType(MobilePlatformType.ANDROID)
-                .mobileRemoteModeType(getConfig().mobileRemoteMode())
-                .runModeType(getConfig().mobileRunMode()).build();
-        WebDriver driver = DriverFactory.getDriverForMobile(driverData);
-        driver.quit();
+        MobileDriverData driverData=new MobileDriverData(MobilePlatformType.ANDROID,getConfig().mobileRemoteMode());
+
+        WebDriver driver = DriverFactory.getDriverForMobile(getConfig().mobileRunMode()).getDriver(driverData);
+         DriverManager.setDriver(driver);
     }
     public static void quitDriver() {
-        //Vishal
+        if(Objects.nonNull(DriverManager.getDriver())) {
+            DriverManager.getDriver().quit();
+            DriverManager.unload();
+
+        }
     }
 }

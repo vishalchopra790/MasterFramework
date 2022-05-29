@@ -1,9 +1,10 @@
 package com.company.tests;
 
 import com.company.config.factory.BrowserStackConfigFactory;
-import com.company.config.factory.FrameworkConfigFactory;
+
 import com.company.driver.Driver;
-import org.openqa.selenium.WebDriver;
+
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -18,5 +19,9 @@ public class DemoTest {
         //Dri.get("https://google.com");
         System.out.println(BrowserStackConfigFactory.getConfig().browserStackURL());
 
+    }
+    @AfterMethod
+    public void close(){
+        Driver.quitDriver();
     }
 }

@@ -1,13 +1,14 @@
 package com.company.driver.factory.entity;
 
 import com.company.enums.*;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 
-@Builder
+@AllArgsConstructor
 @Getter
 public class WebDriverData {
     private BrowserType browserType;
     private BrowserRemoteModeType browserRemoteModeType;
-    private RunModeType runModeType;
+
 }
